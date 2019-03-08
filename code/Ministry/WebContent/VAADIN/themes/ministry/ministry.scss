@@ -1,0 +1,180 @@
+// Global variable overrides. Must be declared before importing Valo.
+
+// Defines the plaintext font size, weight and family. Font size affects general component sizing.
+//$v-font-size: 16px;
+//$v-font-weight: 300;
+//$v-font-family: "Open Sans", sans-serif;
+
+// Defines the border used by all components.
+//$v-border: 1px solid (v-shade 0.7);
+//$v-border-radius: 4px;
+
+// Affects the color of some component elements, e.g Button, Panel title, etc
+//$v-background-color: hsl(210, 0%, 98%);
+// Affects the color of content areas, e.g  Panel and Window content, TextField input etc
+//$v-app-background-color: $v-background-color;
+
+// Affects the visual appearance of all components
+//$v-gradient: v-linear 8%;
+//$v-bevel-depth: 30%;
+//$v-shadow-opacity: 5%;
+
+// Defines colors for indicating status (focus, success, failure)
+//$v-focus-color: valo-focus-color(); // Calculates a suitable color automatically
+//$v-friendly-color: #2c9720;
+//$v-error-indicator-color: #ed473b;
+
+// For more information, see: https://vaadin.com/book/-/page/themes.valo.html
+// Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
+
+@import "../valo/valo.scss";
+
+@mixin ministry {
+  @include valo;
+
+  // Insert your own theme rules here
+  
+  .v-label {
+		text-align: right;
+		direction: rtl;
+		font-weight: bold;
+	}
+	
+	.v-window .v-window-header {
+		text-align: center;    
+	}
+
+	.v-textfield {
+		text-align: right;
+		direction: rtl;
+	}
+	
+	.v-caption {
+		text-align: right;
+		direction: rtl;
+		font-weight: bold;
+	}
+	
+	.v-horizontallayout {
+		direction: rtl;
+	}
+
+	.v-filterselect-input {
+		direction: rtl;
+	}
+	
+	.v-filterselect-button::before {
+		margin-right: -30px;
+	}
+	
+	.v-filterselect-suggestmenu {
+		direction: rtl;
+	}
+	
+	.v-select-optiongroup {
+		text-align: right;
+		direction: rtl;
+	}
+
+	.v-select-option.v-checkbox {
+		direction: rtl;
+		padding-right: 100px;
+	}
+	
+	.v-table-header {
+    	font-size: 16px;
+	}
+	
+	.v-table {
+		background: white;
+	}
+
+	.v-menubar {
+		padding-top: 30px;
+	}
+	
+	.v-menubar-menuitem {
+		text-align: right;
+		direction: rtl;
+	}
+	
+	.v-horizontallayout-smallmargin-colored {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		
+		background-color: #f3f15d;
+		
+    	padding-top: 10px;
+    	padding-right: 10px;
+    	padding-bottom: 10px;
+    	padding-left: 10px;
+	}
+	
+	.v-verticallayout-smallmargin-light {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		
+		background-color: #eeeeee;
+		
+    	padding-top: 10px;
+    	padding-right: 10px;
+    	padding-bottom: 10px;
+    	padding-left: 10px;
+	}
+	
+	.v-verticallayout-smallmargin-heavy {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		
+		background-color: #cccccc;
+		
+    	padding-top: 10px;
+    	padding-right: 10px;
+    	padding-bottom: 10px;
+    	padding-left: 10px;
+	}
+	
+	.v-label-heavyredlabel {
+		color: #920000;
+	}
+	
+	.v-label-border {
+    	border: 2px solid #759AA0;
+    	padding: 5px;
+	}
+	
+	.v-button-button-right-aligned {
+  		text-align: right;
+	}
+	
+	.v-textarea {
+		text-align: right;
+		direction: rtl;
+	}
+	
+	.v-caption {
+		font-weight: bold;
+		font-size: 100%;
+	}
+	
+	.v-select {
+		text-align: right;
+		direction: rtl;
+	}
+	
+	.v-select-caption {
+		text-align: right;
+		direction: rtl;
+	}
+	
+	.v-select-select {
+		text-align: right;
+		direction: rtl;
+	}
+	
+	option {
+		text-align: right;
+		direction: rtl;
+	}
+}
+

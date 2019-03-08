@@ -1,0 +1,34 @@
+--import
+
+create user ministryr2 identified by ministryr2p;
+
+alter user ministryr2 quota unlimited on system;
+
+grant create table to ministryr2;
+
+create or replace directory dumpdir as 'E:/dump';
+
+GRANT read, write ON DIRECTORY dumpdir TO ministryr2;
+
+grant create session to ministryr2;
+
+alter profile DEFAULT limit PASSWORD_LIFE_TIME unlimited;
+
+select * from dba_profiles where profile = (select profile from dba_users where username='MINISTRY') and RESOURCE_NAME='PASSWORD_LIFE_TIME';
+
+select USERNAME,ACCOUNT_STATUS,EXPIRY_DATE,PROFILE from  dba_users where USERNAME='MINISTRY';
+
+--alter profile default limit FAILED_LOGIN_ATTEMPTS unlimited;
+
+impdp ministryr2/ministryr2p@xe schemas=ministryr2 directory=dumpdir dumpfile=MINISTRYR2_2017_10_27_15_08_21_467.dmp
+
+impdp ministryr2/ministryr2p@xe remap_schema=ministry:ministryr2 directory=dumpdir dumpfile=ministry.dmp
+
+
+--export
+
+create or replace directory dumpdir as 'D:/dump';
+
+GRANT read, write ON DIRECTORY dumpdir TO ministry;
+
+expdp ministryr2/ministryr2p@xe schemas=ministryr2 directory=dumpdir dumpfile=ministryr2.dmp logfile=ministryr2.log

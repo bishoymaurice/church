@@ -1,0 +1,10 @@
+.DS_Store
+.metadata
+.classpath
+.settings
+.project
+/target
+styles.css
+gwt-unitCache
+src/main/webapp/VAADIN/widgetsets
+/target

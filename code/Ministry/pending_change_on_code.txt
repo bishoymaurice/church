@@ -1,0 +1,7 @@
+selectMinistersBySubClass
+	generateEftqadReportForClass
+	getChildrenByClassAndDate
+	getMinistersBySubClass
+	done
+	
+	review all class_id queries
