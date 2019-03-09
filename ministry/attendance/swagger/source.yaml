@@ -1,0 +1,73 @@
+swagger: '2.0'
+info:
+  description: This API is created as part of ministry attendance program
+  version: 1.0.0
+  title: Ministry Attendance API
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: minister
+  description: This tag refers to ministers
+
+paths:
+  /attendance:
+    post:
+      tags:
+      - minister
+      summary: Registers member attendance
+      operationId: memberRegister
+      description: Registers member attendance
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: AttendeeSignIn
+        description: passing member and meeting details for attendee sign in
+        required: true
+        schema:
+          $ref: '#/definitions/AttendeeSignIn'
+      responses:
+        200:
+          description: attendee registered successfully
+          schema:
+            $ref: '#/definitions/AttendeeSignIn'
+        400:
+          description: bad input parameter
+
+definitions:
+  Member:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+  Meeting:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      date:
+        type: string
+      time:
+        type: string
+  AttendeeSignIn:
+    type: object
+    properties:
+      member:
+        $ref: '#/definitions/Member'
+      meeting:
+        $ref: '#/definitions/Meeting'
+      
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /bishoy8/MinistryAttendance/1.0.0
+# Added by API Auto Mocking Plugin
+schemes:
+ - https

@@ -15,34 +15,34 @@ import javax.validation.constraints.*;
  * AttendeeSignIn
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-03-08T12:34:07.357Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-03-08T15:50:03.200Z")
 
 public class AttendeeSignIn   {
-  @JsonProperty("user")
-  private Member user = null;
+  @JsonProperty("member")
+  private Member member = null;
 
   @JsonProperty("meeting")
   private Meeting meeting = null;
 
-  public AttendeeSignIn user(Member user) {
-    this.user = user;
+  public AttendeeSignIn member(Member member) {
+    this.member = member;
     return this;
   }
 
   /**
-   * Get user
-   * @return user
+   * Get member
+   * @return member
   **/
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public Member getUser() {
-    return user;
+  public Member getMember() {
+    return member;
   }
 
-  public void setUser(Member user) {
-    this.user = user;
+  public void setMember(Member member) {
+    this.member = member;
   }
 
   public AttendeeSignIn meeting(Meeting meeting) {
@@ -76,13 +76,13 @@ public class AttendeeSignIn   {
       return false;
     }
     AttendeeSignIn attendeeSignIn = (AttendeeSignIn) o;
-    return Objects.equals(this.user, attendeeSignIn.user) &&
+    return Objects.equals(this.member, attendeeSignIn.member) &&
         Objects.equals(this.meeting, attendeeSignIn.meeting);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(user, meeting);
+    return Objects.hash(member, meeting);
   }
 
   @Override
@@ -90,7 +90,7 @@ public class AttendeeSignIn   {
     StringBuilder sb = new StringBuilder();
     sb.append("class AttendeeSignIn {\n");
     
-    sb.append("    user: ").append(toIndentedString(user)).append("\n");
+    sb.append("    member: ").append(toIndentedString(member)).append("\n");
     sb.append("    meeting: ").append(toIndentedString(meeting)).append("\n");
     sb.append("}");
     return sb.toString();

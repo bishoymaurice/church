@@ -1,0 +1,10 @@
+church.ministry.att.api.control
+church.ministry.att.api.control.conval
+church.ministry.att.api.control.util
+church.ministry.att.hibernate.model
+church.ministry.att.server.hibernate.util
+church.ministry.att.server.test
+io.swagger
+io.swagger.api
+io.swagger.configuration
+io.swagger.model
