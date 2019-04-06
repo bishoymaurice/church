@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import church.ministry.att.api.control.conval.CONST;
 import church.ministry.att.api.control.util.DateUtil;
+import church.ministry.att.hibernate.model.Child;
 import church.ministry.att.hibernate.model.ChildMassAttendance;
 import church.ministry.att.hibernate.model.ChildMinistryAttendance;
 import church.ministry.att.server.hibernate.util.HibernateUtil;
@@ -38,7 +39,7 @@ public class AttendanceControl {
 
 	/**
 	 * The purpose of this function is to check time and decide either attendance
-	 * should be inserted on the database for the Holy Mass or for Sunday Schools.
+	 * should be inserted to the database for the Holy Mass or for Sunday Schools.
 	 * 
 	 * It also makes sure that today is Friday; as it is not meant to be used at any
 	 * other day until now.
@@ -48,20 +49,54 @@ public class AttendanceControl {
 	 */
 	public AttendeeSignIn signIn(AttendeeSignIn attendee) {
 
+		// Assume there is no meetings identified yet!
+		attendee.setMeeting(null);
+
 		// Checking if today is Friday
 		if (dateUtil.getDayOfWeekName().equals(CONST.SIMPLE_DATA_FORMAT_DAY_FRI)) {
 
-			// Checking time to decide if the meeting is Holy Mass or Sunday Schools
-			if (dateUtil.getHourOfDay() <= CONST.HOLY_MASS_ATT_DEADLINE_HOUR
-					&& dateUtil.getMinute() < CONST.HOLY_MASS_ATT_DEADLINE_MINUTE) {
+			// This mean there must be a meeting matching that criteria (today is Friday)
+			// We need this because it will affect HTTP response in API controller class
+			attendee.setMeeting(new Meeting());
 
-				// Holy Mass
-				attendee = massSignIn(attendee);
+			Session session = null;
+			try {
+				session = HibernateUtil.getSessionFactory().openSession();
 
-			} else {
+				// Check if child exists
+				Child child = new Child();
+				child = session.get(Child.class, attendee.getMember().getId());
 
-				// Sunday Schools
-				attendee = sundaySchoolsSignIn(attendee);
+				if (child != null && child.getMember() != null) {
+
+					// Get child information
+					child.setMember(child.getMember());
+
+					// Set child information
+					attendee.getMember().setName(child.getMember().getName());
+
+					// Checking time to decide if the meeting is Holy Mass or Sunday Schools
+					if ((dateUtil.getHourOfDay() < CONST.HOLY_MASS_ATT_DEADLINE_HOUR)
+							|| (dateUtil.getHourOfDay() == CONST.HOLY_MASS_ATT_DEADLINE_HOUR
+									&& dateUtil.getMinute() < CONST.HOLY_MASS_ATT_DEADLINE_MINUTE)) {
+
+						// Holy Mass
+						attendee = massSignIn(attendee, session);
+
+					} else {
+
+						// Sunday Schools
+						attendee = sundaySchoolsSignIn(attendee, session);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				// Closing database session
+				if (session != null) {
+					session.clear();
+					session.close();
+				}
 			}
 		}
 		return attendee;
@@ -73,13 +108,7 @@ public class AttendanceControl {
 	 * @param attendee
 	 * @return
 	 */
-	private AttendeeSignIn massSignIn(AttendeeSignIn attendee) {
-		// Creating boolean for sign in status
-		boolean ifSignedIn = false;
-
-		// Database session
-		Session session = null;
-
+	private AttendeeSignIn massSignIn(AttendeeSignIn attendee, Session session) {
 		// Database transaction
 		Transaction transaction = null;
 
@@ -90,9 +119,6 @@ public class AttendanceControl {
 			massAttendee.setId(attendee.getMember().getId());
 			massAttendee.setActionDate(this.dateUtil.getDayScopeCalendar().getTime());
 
-			// Opening database session
-			session = HibernateUtil.getSessionFactory().openSession();
-
 			// *************** Check if member was already registered ***************//
 
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -100,9 +126,11 @@ public class AttendanceControl {
 			Root<ChildMassAttendance> root = criteriaQuery.from(ChildMassAttendance.class);
 			criteriaQuery.select(root);
 
-			criteriaQuery.where(criteriaBuilder.equal(root.get("id"), attendee.getMember().getId()));
-			criteriaQuery.where(
-					criteriaBuilder.equal(root.get("actionDate"), this.dateUtil.getDayScopeCalendar().getTime()));
+			Predicate idMatch = criteriaBuilder.equal(root.<Integer>get("id"), attendee.getMember().getId());
+			Predicate dateMatch = criteriaBuilder.equal(root.<Date>get("actionDate"),
+					this.dateUtil.getDayScopeCalendar().getTime());
+
+			criteriaQuery.where(criteriaBuilder.and(idMatch, dateMatch));
 
 			List<ChildMassAttendance> attendanceResult = session.createQuery(criteriaQuery).getResultList();
 
@@ -124,13 +152,7 @@ public class AttendanceControl {
 			}
 			// *************** Register ***************// DONE
 
-			// Sign in status is success
-			ifSignedIn = true;
-
 			// Set meeting ID and name as a confirmation for the registered meeting
-			if (attendee.getMeeting() == null) {
-				attendee.setMeeting(new Meeting());
-			}
 			attendee.getMeeting().setId(CONST.MEETING_HOLY_MASS_ID);
 			attendee.getMeeting().setName(CONST.MEETING_HOLY_MASS_NAME);
 
@@ -138,27 +160,13 @@ public class AttendanceControl {
 
 			ex.printStackTrace();
 
-			// Sign in status is failed
-			ifSignedIn = false;
-
-			// Rollback in case of exception caught
+			// Roll back in case of exception caught
 			if (transaction != null) {
 				transaction.rollback();
 			}
-		} finally {
-
-			// Closing database session
-			if (session != null) {
-				session.clear();
-				session.close();
-			}
 		}
 
-		if (ifSignedIn) {
-			return attendee;
-		} else {
-			return null;
-		}
+		return attendee;
 	}
 
 	/**
@@ -167,13 +175,7 @@ public class AttendanceControl {
 	 * @param attendee
 	 * @return
 	 */
-	private AttendeeSignIn sundaySchoolsSignIn(AttendeeSignIn attendee) {
-		// Creating boolean for sign in status
-		boolean ifSignedIn = false;
-
-		// Database session
-		Session session = null;
-
+	private AttendeeSignIn sundaySchoolsSignIn(AttendeeSignIn attendee, Session session) {
 		// Database transaction
 		Transaction transaction = null;
 
@@ -184,9 +186,6 @@ public class AttendanceControl {
 			ministryAttendee.setId(attendee.getMember().getId());
 			ministryAttendee.setActionDate(this.dateUtil.getDayScopeCalendar().getTime());
 
-			// Opening database session
-			session = HibernateUtil.getSessionFactory().openSession();
-
 			// *************** Check if member was already registered ***************//
 
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -195,9 +194,11 @@ public class AttendanceControl {
 			Root<ChildMinistryAttendance> root = criteriaQuery.from(ChildMinistryAttendance.class);
 			criteriaQuery.select(root);
 
-			criteriaQuery.where(criteriaBuilder.equal(root.get("id"), attendee.getMember().getId()));
-			criteriaQuery.where(
-					criteriaBuilder.equal(root.get("actionDate"), this.dateUtil.getDayScopeCalendar().getTime()));
+			Predicate idMatch = criteriaBuilder.equal(root.<Integer>get("id"), attendee.getMember().getId());
+			Predicate dateMatch = criteriaBuilder.equal(root.<Date>get("actionDate"),
+					this.dateUtil.getDayScopeCalendar().getTime());
+
+			criteriaQuery.where(criteriaBuilder.and(idMatch, dateMatch));
 
 			List<ChildMinistryAttendance> attendanceResult = session.createQuery(criteriaQuery).getResultList();
 
@@ -219,13 +220,7 @@ public class AttendanceControl {
 			}
 			// *************** Register ***************// DONE
 
-			// Sign in status is success
-			ifSignedIn = true;
-
 			// Set meeting ID and name as a confirmation for the registered meeting
-			if (attendee.getMeeting() == null) {
-				attendee.setMeeting(new Meeting());
-			}
 			attendee.getMeeting().setId(CONST.MEETING_SUNDAY_SCHOOLS_ID);
 			attendee.getMeeting().setName(CONST.MEETING_SUNDAY_SCHOOLS_NAME);
 
@@ -233,26 +228,12 @@ public class AttendanceControl {
 
 			ex.printStackTrace();
 
-			// Sign in status is failed
-			ifSignedIn = false;
-
-			// Rollback in case of exception caught
+			// Roll back in case of exception caught
 			if (transaction != null) {
 				transaction.rollback();
 			}
-		} finally {
-
-			// Closing database session
-			if (session != null) {
-				session.clear();
-				session.close();
-			}
 		}
 
-		if (ifSignedIn) {
-			return attendee;
-		} else {
-			return null;
-		}
+		return attendee;
 	}
 }

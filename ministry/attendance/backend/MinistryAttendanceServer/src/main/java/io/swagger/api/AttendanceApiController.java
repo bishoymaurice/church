@@ -50,7 +50,19 @@ public class AttendanceApiController implements AttendanceApi {
 				attendeeSignIn = attCtrl.signIn(attendeeSignIn);
 
 				if (attendeeSignIn != null) {
-					return new ResponseEntity<AttendeeSignIn>(attendeeSignIn, HttpStatus.OK);
+
+					if (attendeeSignIn.getMeeting() == null) {
+						return new ResponseEntity<AttendeeSignIn>(attendeeSignIn, HttpStatus.PRECONDITION_FAILED);
+					}
+
+					else if (attendeeSignIn.getMember().getName() == null) {
+						return new ResponseEntity<AttendeeSignIn>(attendeeSignIn, HttpStatus.NOT_FOUND);
+					}
+
+					else {
+						return new ResponseEntity<AttendeeSignIn>(attendeeSignIn, HttpStatus.OK);
+					}
+
 				} else {
 					return new ResponseEntity<AttendeeSignIn>(HttpStatus.INTERNAL_SERVER_ERROR);
 				}

@@ -50,6 +50,8 @@ public class TestHibernate {
 		attendee.setMember(member);
 
 		AttendanceControl ac = new AttendanceControl();
-		ac.signIn(attendee);
+		attendee = ac.signIn(attendee);
+
+		System.out.println(attendee.getMember().getName());
 	}
 }

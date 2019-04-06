@@ -55,9 +55,10 @@ public class DateUtil {
 		this.dayScopeCalendar.setTime(this.nowDate);
 
 		// Remove hours, minutes and seconds from Calendar instance
-		this.dayScopeCalendar.set(Calendar.HOUR, CONST.CALENDAR_H_0);
+		this.dayScopeCalendar.set(Calendar.HOUR_OF_DAY, CONST.CALENDAR_H_0);
 		this.dayScopeCalendar.set(Calendar.MINUTE, CONST.CALENDAR_M_0);
 		this.dayScopeCalendar.set(Calendar.SECOND, CONST.CALENDAR_S_0);
+		this.dayScopeCalendar.set(Calendar.MILLISECOND, CONST.CALENDAR_MS_0);
 		// ************** DAY SOCPE **************// DONE
 	}
 

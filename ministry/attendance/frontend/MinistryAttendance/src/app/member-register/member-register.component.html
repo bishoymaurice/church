@@ -1,0 +1,27 @@
+<div *ngIf="greenMessage">
+  <img src="/assets/img/happy.png" class="emoji">
+  <h1 class="greenh1">
+    {{greenMessage}}
+  </h1>
+</div>
+
+<div *ngIf="meetingNotFoundMsg">
+  <img src="/assets/img/thinking.png" class="emoji">
+  <h1 class="orangeh1">
+    {{meetingNotFoundMsg}}
+  </h1>
+</div>
+
+<div *ngIf="memberNotFound">
+  <img src="/assets/img/notfound.png" class="emoji">
+  <h1 class="orangeh1">
+    {{memberNotFound}}
+  </h1>
+</div>
+
+<div *ngIf="redMessage">
+  <img src="/assets/img/sad.png" class="emoji">
+  <h1 class="redh1">
+    {{redMessage}}
+  </h1>
+</div>

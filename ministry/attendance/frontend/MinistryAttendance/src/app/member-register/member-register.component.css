@@ -1,0 +1,26 @@
+.greenh1 {
+  float: left;
+  padding-top: 4%;
+  color: mediumseagreen;
+}
+
+.redh1 {
+  float: left;
+  padding-top: 4%;
+  color: red;
+}
+
+.orangeh1 {
+  float: left;
+  padding-top: 4%;
+  color: orange;
+}
+
+.emoji {
+  float: left;
+  padding-left: 2%;
+  padding-right: 1%;
+  padding-top: 2%;
+  height: 140px;
+  width: 140px;
+}
