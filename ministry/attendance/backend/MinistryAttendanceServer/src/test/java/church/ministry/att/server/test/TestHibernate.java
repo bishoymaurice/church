@@ -11,6 +11,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 
 import church.ministry.att.api.control.AttendanceControl;
+import church.ministry.att.api.control.RelationControl;
 import church.ministry.att.hibernate.model.ChildMassAttendance;
 import church.ministry.att.server.hibernate.util.HibernateUtil;
 import io.swagger.model.AttendeeSignIn;
@@ -18,7 +19,17 @@ import io.swagger.model.Member;
 
 public class TestHibernate {
 	public static void main(String[] args) {
-		attendeeSignIn();
+		relationControlTest();
+	}
+
+	public static void relationControlTest() {
+		RelationControl rc = new RelationControl();
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		
+		
+		System.out.println(rc.getMinisterIdByChildId(session, "202"));
 	}
 
 	public static void testQuery() {

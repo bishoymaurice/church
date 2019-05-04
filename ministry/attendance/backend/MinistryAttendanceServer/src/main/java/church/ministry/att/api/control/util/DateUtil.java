@@ -3,7 +3,8 @@ package church.ministry.att.api.control.util;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import church.ministry.att.api.control.conval.CONST;
+
+import church.ministry.att.api.control.statica.Const;
 
 /**
  * This class is doing all operations needed on date and time.
@@ -27,6 +28,12 @@ public class DateUtil {
 	// Define calendar for scope of day
 	private Calendar dayScopeCalendar = null;
 
+	// Define string for today date
+	private String todayToString;
+
+	// Define date format;
+	private final String dateFormat = "dd-MM-yyyy";
+
 	/**
 	 * Gets day of week name, hour in 24-hours format and minute based on current
 	 * date and time.
@@ -38,7 +45,7 @@ public class DateUtil {
 		this.nowCalednar.setTime(this.nowDate);
 
 		// Formatting current date to get day of week name
-		SimpleDateFormat simpleDateformat = new SimpleDateFormat(CONST.SIMPLE_DATA_FORMAT_DAY_OF_WEEK_NAME);
+		SimpleDateFormat simpleDateformat = new SimpleDateFormat(Const.SIMPLE_DATA_FORMAT_DAY_OF_WEEK_NAME);
 
 		// Return day of week name
 		this.dayOfWeek = simpleDateformat.format(this.nowDate);
@@ -55,11 +62,14 @@ public class DateUtil {
 		this.dayScopeCalendar.setTime(this.nowDate);
 
 		// Remove hours, minutes and seconds from Calendar instance
-		this.dayScopeCalendar.set(Calendar.HOUR_OF_DAY, CONST.CALENDAR_H_0);
-		this.dayScopeCalendar.set(Calendar.MINUTE, CONST.CALENDAR_M_0);
-		this.dayScopeCalendar.set(Calendar.SECOND, CONST.CALENDAR_S_0);
-		this.dayScopeCalendar.set(Calendar.MILLISECOND, CONST.CALENDAR_MS_0);
+		this.dayScopeCalendar.set(Calendar.HOUR_OF_DAY, Const.CALENDAR_H_0);
+		this.dayScopeCalendar.set(Calendar.MINUTE, Const.CALENDAR_M_0);
+		this.dayScopeCalendar.set(Calendar.SECOND, Const.CALENDAR_S_0);
+		this.dayScopeCalendar.set(Calendar.MILLISECOND, Const.CALENDAR_MS_0);
 		// ************** DAY SOCPE **************// DONE
+
+		SimpleDateFormat dateFormatter = new SimpleDateFormat(this.dateFormat);
+		this.todayToString = dateFormatter.format(this.nowDate);
 	}
 
 	/**
@@ -96,5 +106,15 @@ public class DateUtil {
 	 */
 	public Calendar getDayScopeCalendar() {
 		return this.dayScopeCalendar;
+	}
+
+	/**
+	 * Returns today date in date type of string
+	 * 
+	 * @param today
+	 * @return
+	 */
+	public String getTodayDateToString() {
+		return this.todayToString;
 	}
 }

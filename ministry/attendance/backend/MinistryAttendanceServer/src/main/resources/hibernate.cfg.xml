@@ -25,5 +25,10 @@
 			class="church.ministry.att.hibernate.model.ChildMinistryAttendance" />
 		<mapping class="church.ministry.att.hibernate.model.Child" />
 		<mapping class="church.ministry.att.hibernate.model.Member" />
+		<mapping
+			class="church.ministry.att.hibernate.model.ChildFollowup" />
+		<mapping
+			class="church.ministry.att.hibernate.model.MinisterChildAssigned" />
+
 	</session-factory>
 </hibernate-configuration>

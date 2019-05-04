@@ -1,6 +1,6 @@
-package church.ministry.att.api.control.conval;
+package church.ministry.att.api.control.statica;
 
-public class CONST {
+public class Const {
 
 	public static final int MEETING_HOLY_MASS_ID = 1;
 	public static final String MEETING_HOLY_MASS_NAME = "Friday Holy Mass";
@@ -18,5 +18,7 @@ public class CONST {
 
 	public static final String SIMPLE_DATA_FORMAT_DAY_OF_WEEK_NAME = "E";
 	public static final String SIMPLE_DATA_FORMAT_DAY_FRI = "Fri";
+
+	public static final int ID_NOT_FOUND = -400;
 
 }

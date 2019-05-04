@@ -10,7 +10,8 @@ import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import church.ministry.att.api.control.conval.CONST;
+
+import church.ministry.att.api.control.statica.Const;
 import church.ministry.att.api.control.util.DateUtil;
 import church.ministry.att.hibernate.model.Child;
 import church.ministry.att.hibernate.model.ChildMassAttendance;
@@ -53,7 +54,7 @@ public class AttendanceControl {
 		attendee.setMeeting(null);
 
 		// Checking if today is Friday
-		if (dateUtil.getDayOfWeekName().equals(CONST.SIMPLE_DATA_FORMAT_DAY_FRI)) {
+		if (dateUtil.getDayOfWeekName().equals(Const.SIMPLE_DATA_FORMAT_DAY_FRI)) {
 
 			// This mean there must be a meeting matching that criteria (today is Friday)
 			// We need this because it will affect HTTP response in API controller class
@@ -76,9 +77,9 @@ public class AttendanceControl {
 					attendee.getMember().setName(child.getMember().getName());
 
 					// Checking time to decide if the meeting is Holy Mass or Sunday Schools
-					if ((dateUtil.getHourOfDay() < CONST.HOLY_MASS_ATT_DEADLINE_HOUR)
-							|| (dateUtil.getHourOfDay() == CONST.HOLY_MASS_ATT_DEADLINE_HOUR
-									&& dateUtil.getMinute() < CONST.HOLY_MASS_ATT_DEADLINE_MINUTE)) {
+					if ((dateUtil.getHourOfDay() < Const.HOLY_MASS_ATT_DEADLINE_HOUR)
+							|| (dateUtil.getHourOfDay() == Const.HOLY_MASS_ATT_DEADLINE_HOUR
+									&& dateUtil.getMinute() < Const.HOLY_MASS_ATT_DEADLINE_MINUTE)) {
 
 						// Holy Mass
 						attendee = massSignIn(attendee, session);
@@ -153,8 +154,8 @@ public class AttendanceControl {
 			// *************** Register ***************// DONE
 
 			// Set meeting ID and name as a confirmation for the registered meeting
-			attendee.getMeeting().setId(CONST.MEETING_HOLY_MASS_ID);
-			attendee.getMeeting().setName(CONST.MEETING_HOLY_MASS_NAME);
+			attendee.getMeeting().setId(Const.MEETING_HOLY_MASS_ID);
+			attendee.getMeeting().setName(Const.MEETING_HOLY_MASS_NAME);
 
 		} catch (Exception ex) {
 
@@ -221,8 +222,8 @@ public class AttendanceControl {
 			// *************** Register ***************// DONE
 
 			// Set meeting ID and name as a confirmation for the registered meeting
-			attendee.getMeeting().setId(CONST.MEETING_SUNDAY_SCHOOLS_ID);
-			attendee.getMeeting().setName(CONST.MEETING_SUNDAY_SCHOOLS_NAME);
+			attendee.getMeeting().setId(Const.MEETING_SUNDAY_SCHOOLS_ID);
+			attendee.getMeeting().setName(Const.MEETING_SUNDAY_SCHOOLS_NAME);
 
 		} catch (Exception ex) {
 
