@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import church.ministry.att.api.control.statica.Const;
+import church.ministry.att.api.control.common.Const;
 
 /**
  * This class is doing all operations needed on date and time.

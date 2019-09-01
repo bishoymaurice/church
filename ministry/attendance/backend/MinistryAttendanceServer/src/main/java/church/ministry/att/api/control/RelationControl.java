@@ -8,7 +8,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
-import church.ministry.att.api.control.statica.Const;
+
+import church.ministry.att.api.control.common.Const;
 import church.ministry.att.hibernate.model.MinisterChildAssigned;
 
 public class RelationControl {

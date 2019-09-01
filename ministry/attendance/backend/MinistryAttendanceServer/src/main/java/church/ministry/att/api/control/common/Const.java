@@ -1,4 +1,4 @@
-package church.ministry.att.api.control.statica;
+package church.ministry.att.api.control.common;
 
 public class Const {
 
@@ -19,6 +19,6 @@ public class Const {
 	public static final String SIMPLE_DATA_FORMAT_DAY_OF_WEEK_NAME = "E";
 	public static final String SIMPLE_DATA_FORMAT_DAY_FRI = "Fri";
 
-	public static final int ID_NOT_FOUND = -400;
+	public static final int ID_NOT_FOUND = -100;
 
 }

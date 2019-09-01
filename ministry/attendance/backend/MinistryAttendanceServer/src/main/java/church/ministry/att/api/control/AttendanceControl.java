@@ -11,7 +11,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import church.ministry.att.api.control.statica.Const;
+import church.ministry.att.api.control.common.Const;
 import church.ministry.att.api.control.util.DateUtil;
 import church.ministry.att.hibernate.model.Child;
 import church.ministry.att.hibernate.model.ChildMassAttendance;

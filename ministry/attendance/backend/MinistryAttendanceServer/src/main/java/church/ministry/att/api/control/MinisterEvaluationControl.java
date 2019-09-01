@@ -2,7 +2,7 @@ package church.ministry.att.api.control;
 
 import org.hibernate.Session;
 
-import church.ministry.att.api.control.statica.Code;
+import church.ministry.att.api.control.common.Code;
 import church.ministry.att.api.control.util.DateUtil;
 
 public class MinisterEvaluationControl {
